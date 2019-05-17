@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{object.title}}</h2>
+<div class="card">
+         <div class="card-header">
+
+             <span class="font-weight-bold">{{ object.author }}</span>
+             <span class="text-muted">{{ object.title }}|
+    {{ object.date }}</span>
+         </div>
+         <div class="card-body">
+             {{ object.body }}
+         </div>
+    </div>
+    <div class="card-footer text-center text-muted">
+        <a href="{% url 'edit' object.id%}">Edit</a> | <a href="{% url 'delete' object.id %}">Delete</a>
+</div>
+
+<div class="card-footer">
+    <p><strong>Комментарии</strong></p>
+    <form method="post" action="/articles/comment/">
+        {% csrf_token %}
+        <input placeholder="type here" name="comment" type="text">
+        <input type="hidden" name="article" value="{{object.id}}">
+        <button type="submit" class="btn btn-primary">комментировать</button>
+    </form>
+</br>
+</br>
+    {% for comment in article.comments.all %}
+    <p>автор: {{comment.author}}|
+    <span class="font-weight-bold">"{{comment}}" </span></p>
+    {% endfor %}
+</div>
+<br>
+<div>
+    <a href="{% url 'article' %}" class="btn btn-primary btn-lg">Go back to all articles</a>
+</div>
+{% endblock %}
